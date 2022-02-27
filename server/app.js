@@ -23,10 +23,10 @@ var httpsServer = https.createServer(credentials, app);
 //app.use(express.static(path.resolve(__dirname, '..', 'build')));
 
 const db = mysql.createConnection({
-    host: '172.25.240.1',
-    user: 'bonn',
+    host: '10.0.0.71',
+    user: 'hamu',
     password: '1234',
-    database: 'testing'
+    database: 'dbms-final'
 });
 // show data
 app.get('/data', function(req,res){
@@ -42,7 +42,7 @@ app.get('/data', function(req,res){
 
 //delete
 app.put('/delete', function(req, res) {
-    var sql = 'DELETE FROM users WHERE id = ?';
+    var sql = 'DELETE FROM users WHERE ID = ?';
     db.query(sql,[req.body.idkey],function (error, results) {
         if(error) throw error;
         res.send(JSON.stringify(results));
@@ -51,7 +51,7 @@ app.put('/delete', function(req, res) {
 
 //edit
 app.put('/data', function(req, res) {
-    var sql = 'UPDATE users SET firstname= ? , lastname = ? WHERE id = ?';
+    var sql = 'UPDATE users SET FName= ? , LName = ? WHERE ID = ?';
     db.query(sql,[req.body.firstname,req.body.lastname,req.body.idkey],function (error, results) {
         if(error) throw error;
         res.send(JSON.stringify(results));
@@ -62,9 +62,11 @@ app.put('/data', function(req, res) {
 app.post('/data', function(req, res){
     console.log(req.body);
     let data = {
-        id:req.body.idkey,
-        firstname:req.body.firstname,
-        lastname:req.body.lastname
+        ID:req.body.idkey,
+        FName:req.body.firstname,
+        LName:req.body.lastname,
+        Email:req.body.email
+
     };
     let sql = 'INSERT INTO users SET ?';
     db.query(sql, data, (err, result)=>{
